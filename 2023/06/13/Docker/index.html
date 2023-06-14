@@ -91,36 +91,61 @@
   	</span>
   </div>
   <div class="post-content">
-  <h1 id="docker全流程配置及应用"><a href="#docker全流程配置及应用" class="headerlink" title="docker全流程配置及应用"></a>docker全流程配置及应用</h1><span id="more"></span>
-
-<h2 id="一、docker初始环境"><a href="#一、docker初始环境" class="headerlink" title="一、docker初始环境"></a>一、docker初始环境</h2><p>虚拟机需要链接网络，安装yum工具<br>yum install -y yum-utils device-mapper-persistent-data lvm2 –skip-broken</p>
+  <h1>docker全流程配置及应用</h1>
+<span id="more"></span>
+<h2 id="一、docker初始环境">一、docker初始环境</h2>
+<p>虚拟机需要链接网络，安装yum工具<br>
+yum install -y yum-utils device-mapper-persistent-data lvm2 --skip-broken</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image002.jpg" class="" title="img">
 <p>安装完成</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image004.jpg" class="" title="img">
-<h2 id="二、配置网卡转发"><a href="#二、配置网卡转发" class="headerlink" title="二、配置网卡转发"></a>二、配置网卡转发</h2><p>写入<br>cat &lt;<EOF > &#x2F;etc&#x2F;sysctl.d&#x2F;docker.conf<br>net.bridge.bridge-nf-call-ip6tables &#x3D; 1<br>net.bridge.bridge-nf-call-iptables &#x3D; 1<br>net.ipv4.conf.default.rp_filter &#x3D; 0<br>net.ipv4.conf.all.rp_filter &#x3D; 0<br>net.ipv4.ip_forward&#x3D;1<br>EOF</p>
+<h2 id="二、配置网卡转发">二、配置网卡转发</h2>
+<p>写入<br>
+cat &lt;<EOF > /etc/sysctl.d/docker.conf<br>
+net.bridge.bridge-nf-call-ip6tables = 1<br>
+net.bridge.bridge-nf-call-iptables = 1<br>
+net.ipv4.conf.default.rp_filter = 0<br>
+net.ipv4.conf.all.rp_filter = 0<br>
+net.ipv4.ip_forward=1<br>
+EOF</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image006.jpg" class="" title="img">
-<p>重新加载内核参数<br>modprobe br_netfilter<br>sysctl -p &#x2F;etc&#x2F;sysctl.d&#x2F;docker.conf</p>
+<p>重新加载内核参数<br>
+modprobe br_netfilter<br>
+sysctl -p /etc/sysctl.d/docker.conf</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image008.jpg" class="" title="img">
-<h2 id="三、利用域名进行docker安装"><a href="#三、利用域名进行docker安装" class="headerlink" title="三、利用域名进行docker安装"></a>三、利用域名进行docker安装</h2><p>用阿里云提供的docker专属repo仓库</p>
+<h2 id="三、利用域名进行docker安装">三、利用域名进行docker安装</h2>
+<p>用阿里云提供的docker专属repo仓库</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/docker-ce.repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image010.jpg" class="" title="img">
-<p>更新yum缓存<br>yum clean all &amp;&amp; yum makecache</p>
+<p>更新yum缓存<br>
+yum clean all &amp;&amp; yum makecache</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image012.jpg" class="" title="img">
 <p>更新缓存成功</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image014.jpg" class="" title="img">
-<p>查看源中可用版本<br>yum list docker-ce –showduplicates | sort -r</p>
+<p>查看源中可用版本<br>
+yum list docker-ce --showduplicates | sort -r</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image016.jpg" class="" title="img">
 <p>yum安装</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image018.jpg" class="" title="img">
-<p>查看docker版本，验证是否成功<br>docker -v</p>
+<p>查看docker版本，验证是否成功<br>
+docker -v</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image022.jpg" class="" title="img">
-<p>配置镜像加速器<br>mkdir -p &#x2F;etc&#x2F;docker</p>
+<p>配置镜像加速器<br>
+mkdir -p /etc/docker</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image024.jpg" class="" title="img">
-<p>touch &#x2F;etc&#x2F;docker&#x2F;daemon.json</p>
+<p>touch /etc/docker/daemon.json</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image026.jpg" class="" title="img">
-<p>vim &#x2F;etc&#x2F;docker&#x2F;daemon.json<br>加入<br>{<br>“registry-mirrors” : [<br>“<a target="_blank" rel="noopener" href="https://8xpk5wnt.mirror.aliyuncs.com/">https://8xpk5wnt.mirror.aliyuncs.com</a>“<br>]<br>}</p>
+<p>vim /etc/docker/daemon.json<br>
+加入<br>
+{<br>
+“registry-mirrors” : [<br>
+“<a target="_blank" rel="noopener" href="https://8xpk5wnt.mirror.aliyuncs.com">https://8xpk5wnt.mirror.aliyuncs.com</a>”<br>
+]<br>
+}</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image028.jpg" class="" title="img">
-<p>启动docker<br>    一定要关闭防火墙！！！<br>systemctl stop firewalld</p>
+<p>启动docker<br>
+一定要关闭防火墙！！！<br>
+systemctl stop firewalld</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image030.jpg" class="" title="img">
 <pre><code>docker配置文件重新加载
 systemctl daemon-reload
@@ -132,29 +157,60 @@ systemctl enable docker
 systemctl start docker
 &#123;% asset_img "clip_image036.jpg" "img" %&#125;
 </code></pre>
-<p>查看docker信息<br>    查看 Docker 守护进程的详细信息<br>    docker info<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image038.jpg" class="" title="img"><br>    列出当前正在运行的容器<br>    docker ps<br>    <br>    列出当前系统中所有可用的 Docker 镜像<br>    docker images<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image042.jpg" class="" title="img"><br>    查找并返回指定的命令在系统中的安装路径<br>    which docker<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image043.png" class="" title="img"><br>    列出当前所有进程，并在输出中过滤包含关键字 docker的进程信息<br>    ps aux |grep docker<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image045.jpg" class="" title="img"></p>
+<p>查看docker信息<br>
+查看 Docker 守护进程的详细信息<br>
+docker info<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image038.jpg" class="" title="img"><br>
+列出当前正在运行的容器<br>
+docker ps<br>
+<br>
+列出当前系统中所有可用的 Docker 镜像<br>
+docker images<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image042.jpg" class="" title="img"><br>
+查找并返回指定的命令在系统中的安装路径<br>
+which docker<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image043.png" class="" title="img"><br>
+列出当前所有进程，并在输出中过滤包含关键字 docker的进程信息<br>
+ps aux |grep docker<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image045.jpg" class="" title="img"></p>
 <pre><code>查找、检查 containerd 服务的运行状态
 ps aux|grep containerd
 systemctl status containerd
 &#123;% asset_img "clip_image047.jpg" "img" %&#125;
 </code></pre>
-<h2 id="四、用docker运行nginx"><a href="#四、用docker运行nginx" class="headerlink" title="四、用docker运行nginx"></a>四、用docker运行nginx</h2><p>搜索一下远程仓库中的镜像文件是否存在<br>docker search nginx</p>
+<h2 id="四、用docker运行nginx">四、用docker运行nginx</h2>
+<p>搜索一下远程仓库中的镜像文件是否存在<br>
+docker search nginx</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image049.jpg" class="" title="img">
-<p>拉取，下载镜像<br>docker pull nginx</p>
+<p>拉取，下载镜像<br>
+docker pull nginx</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image051.jpg" class="" title="img">
-<p>查看镜像<br>docker images</p>
+<p>查看镜像<br>
+docker images</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image053.jpg" class="" title="img">
-<p>运行镜像<br>运行出具体内容，在容器中就跑着一个nginx服务<br>docker run -d -p 80:80 nginx</p>
+<p>运行镜像<br>
+运行出具体内容，在容器中就跑着一个nginx服务<br>
+docker run -d -p 80:80 nginx</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image055.jpg" class="" title="img">
-<p>查看容器是否在运行<br>docker ps</p>
+<p>查看容器是否在运行<br>
+docker ps</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image057.jpg" class="" title="img">
-<p>访问网站<br>192.168.88.161:80</p>
+<p>访问网站<br>
+192.168.88.161:80</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image059.jpg" class="" title="img">
-<p>停止容器<br>docker stop 17e4e6b1f7ab</p>
+<p>停止容器<br>
+docker stop 17e4e6b1f7ab</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image061.jpg" class="" title="img">
-<p>恢复容器<br>docker start 17e4e6b1f7ab</p>
+<p>恢复容器<br>
+docker start 17e4e6b1f7ab</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image063.jpg" class="" title="img">
-<h2 id="五、镜像"><a href="#五、镜像" class="headerlink" title="五、镜像"></a>五、镜像</h2><p>获取镜像<br>    查看本地的镜像文件<br>    docker images<br>    docker image ls<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image065.jpg" class="" title="img"><br>    下载docker镜像</p>
+<h2 id="五、镜像">五、镜像</h2>
+<p>获取镜像<br>
+查看本地的镜像文件<br>
+docker images<br>
+docker image ls<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image065.jpg" class="" title="img"><br>
+下载docker镜像</p>
 <pre><code>&#123;% asset_img "clip_image067.jpg" "img" %&#125;
 docker pull centos
 &#123;% asset_img "clip_image069.jpg" "img" %&#125;
@@ -166,29 +222,90 @@ docker info |grep Root
 &#123;% asset_img "clip_image073.jpg" "img" %&#125;
 &#123;% asset_img "clip_image075.jpg" "img" %&#125;
 </code></pre>
-<p>查看镜像<br>    查看所有镜像<br>    docker images<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image077.jpg" class="" title="img"><br>    查看具体镜像<br>    docker images nginx<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image079.jpg" class="" title="img"><br>    指定tag查看<br>    docker images centos:7.8.2003<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image081.jpg" class="" title="img"><br>    只列出镜像id<br>    docker images -q<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image082.png" class="" title="img"><br>    格式化显示镜像<br>    docker images –format<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image084.jpg" class="" title="img"><br>    搜索镜像<br>    docker search centos<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image086.jpg" class="" title="img"><br>删除镜像<br>    这里下载 体积较小的hello-world镜像进行验证<br>    docker pull hello-world<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image088.jpg" class="" title="img"><br>    删除容器，指定id的前三位即可</p>
+<p>查看镜像<br>
+查看所有镜像<br>
+docker images<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image077.jpg" class="" title="img"><br>
+查看具体镜像<br>
+docker images nginx<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image079.jpg" class="" title="img"><br>
+指定tag查看<br>
+docker images centos:7.8.2003<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image081.jpg" class="" title="img"><br>
+只列出镜像id<br>
+docker images -q<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image082.png" class="" title="img"><br>
+格式化显示镜像<br>
+docker images --format<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image084.jpg" class="" title="img"><br>
+搜索镜像<br>
+docker search centos<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image086.jpg" class="" title="img"><br>
+删除镜像<br>
+这里下载 体积较小的hello-world镜像进行验证<br>
+docker pull hello-world<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image088.jpg" class="" title="img"><br>
+删除容器，指定id的前三位即可</p>
 <pre><code>&#123;% asset_img "clip_image090.jpg" "img" %&#125;
 docker rmi feb
 &#123;% asset_img "clip_image092.jpg" "img" %&#125;
 </code></pre>
-<p>镜像管理<br>    批量删除镜像（慎用）<br>    docker rmi ‘docker images -aq’<br>    批量删除容器<br>    docker rm ‘docker ps -aq’<br>    导出镜像<br>    docker image save centos:7.8.2003 &gt; &#x2F;export&#x2F;software&#x2F;centos1.8.2003.tgz<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image094.jpg" class="" title="img"><br>    导入镜像<br>    docker image load -i &#x2F;export&#x2F;software&#x2F;centos1.8.2003.tgz<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image096.jpg" class="" title="img"><br>去DockerHub搜索并拉取一个Redis镜像<br>    去DockerHub搜索Redis镜像<br>    docker search redis<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image098.jpg" class="" title="img"><br>    查看Redis镜像的名称和版本<br>    docker images | grep redis<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image100.jpg" class="" title="img"><br>    利用docker pull命令拉取镜像<br>    docker pull redis:latest<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image102.jpg" class="" title="img"><br>    利用docker save命令将 redis:latest打包为一个redis.tar包<br>    docker save -o redis.tar redis:latest<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image104.jpg" class="" title="img"><br>    利用docker rmi 删除本地的redis:latest<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image106.jpg" class="" title="img"><br>    docker rmi redis:latest<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image108.jpg" class="" title="img"><br>    利用docker load 重新加载 redis.tar文件<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image110.jpg" class="" title="img"><br>    docker load -i redis.tar<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image112.jpg" class="" title="img"></p>
-<h2 id="六、容器"><a href="#六、容器" class="headerlink" title="六、容器"></a>六、容器</h2><p>运行容器，且进入容器内，且在容器内执行某个命令<br>docker run -it centos:7.8.2003 sh</p>
+<p>镜像管理<br>
+批量删除镜像（慎用）<br>
+docker rmi ‘docker images -aq’<br>
+批量删除容器<br>
+docker rm ‘docker ps -aq’<br>
+导出镜像<br>
+docker image save centos:7.8.2003 &gt; /export/software/centos1.8.2003.tgz<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image094.jpg" class="" title="img"><br>
+导入镜像<br>
+docker image load -i /export/software/centos1.8.2003.tgz<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image096.jpg" class="" title="img"><br>
+去DockerHub搜索并拉取一个Redis镜像<br>
+去DockerHub搜索Redis镜像<br>
+docker search redis<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image098.jpg" class="" title="img"><br>
+查看Redis镜像的名称和版本<br>
+docker images | grep redis<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image100.jpg" class="" title="img"><br>
+利用docker pull命令拉取镜像<br>
+docker pull redis:latest<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image102.jpg" class="" title="img"><br>
+利用docker save命令将 redis:latest打包为一个redis.tar包<br>
+docker save -o redis.tar redis:latest<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image104.jpg" class="" title="img"><br>
+利用docker rmi 删除本地的redis:latest<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image106.jpg" class="" title="img"><br>
+docker rmi redis:latest<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image108.jpg" class="" title="img"><br>
+利用docker load 重新加载 redis.tar文件<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image110.jpg" class="" title="img"><br>
+docker load -i redis.tar<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image112.jpg" class="" title="img"></p>
+<h2 id="六、容器">六、容器</h2>
+<p>运行容器，且进入容器内，且在容器内执行某个命令<br>
+docker run -it centos:7.8.2003 sh</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image114.jpg" class="" title="img">
-<p>开启一个容器，让它帮你运行某个程序<br>docker run centos:7.8.2003 ping baidu.com</p>
+<p>开启一个容器，让它帮你运行某个程序<br>
+docker run centos:7.8.2003 ping <a target="_blank" rel="noopener" href="http://baidu.com">baidu.com</a></p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image116.jpg" class="" title="img">
-<p>运行一个活着的容器，docker -ps可以看到的容器<br>docker run -d centos:7.8.2003 ping baidu.com</p>
+<p>运行一个活着的容器，docker -ps可以看到的容器<br>
+docker run -d centos:7.8.2003 ping <a target="_blank" rel="noopener" href="http://baidu.com">baidu.com</a></p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image118.jpg" class="" title="img">
 <p>丰富docker运行的参数</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image122.jpg" class="" title="img">
-<p>查看容器日志的玩法，刷新日志<br>docker logs -f bbdd89dc5287</p>
+<p>查看容器日志的玩法，刷新日志<br>
+docker logs -f bbdd89dc5287</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image124.jpg" class="" title="img">
-<p>进入正在运行的容器空间内<br>docker exec -it bbdd89dc5287 bash</p>
+<p>进入正在运行的容器空间内<br>
+docker exec -it bbdd89dc5287 bash</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image126.jpg" class="" title="img">
-<p>查看容器的详细信息，用于高级的调试<br>docker container inspect bbdd89dc5287</p>
+<p>查看容器的详细信息，用于高级的调试<br>
+docker container inspect bbdd89dc5287</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image128.jpg" class="" title="img">
 <p>容器的端口映射</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image130.jpg" class="" title="img">
-<p>docker run -d –name bigdata_nginx -p 85:80 nginx</p>
+<p>docker run -d --name bigdata_nginx -p 85:80 nginx</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image132.jpg" class="" title="img">
 <pre><code>查看容器的端口转发情况
 docker port 0ee380974ac8
@@ -201,19 +318,97 @@ docker run -d --name bigdata_nginx_random -P nginx
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image138.jpg" class="" title="img">
 <p>docker run -it centos:7.8.2003 bash</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image140.jpg" class="" title="img">
-<p>停止容器运行<br>docker stop 0ee380974ac8</p>
+<p>停止容器运行<br>
+docker stop 0ee380974ac8</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image142.jpg" class="" title="img">
-<h2 id="七、创建并运行一个容器（案例）"><a href="#七、创建并运行一个容器（案例）" class="headerlink" title="七、创建并运行一个容器（案例）"></a>七、创建并运行一个容器（案例）</h2><p>创建并运行进入容器</p>
+<h2 id="七、创建并运行一个容器（案例）">七、创建并运行一个容器（案例）</h2>
+<p>创建并运行进入容器</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image144.jpg" class="" title="img">
-<p>docker run -it –name my_container5 nginx &#x2F;bin&#x2F;bash</p>
+<p>docker run -it --name my_container5 nginx /bin/bash</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image146.jpg" class="" title="img">
-<p>进入目录<br>cd &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html&#x2F;</p>
+<p>进入目录<br>
+cd /usr/share/nginx/html/</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image148.jpg" class="" title="img">
-<p>修改文件<br>sed -i -e ‘s#Welcome to nginx#fsaf#g’ -e ‘s#<head>#<head><meta charset="utf-8">#g’ index.html</p>
+<p>修改文件<br>
+sed -i -e ‘s#Welcome to nginx#fsaf#g’ -e ‘s#<head>#<head><meta charset="utf-8">#g’ index.html</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image150.jpg" class="" title="img">
-<p>退出<br>exit</p>
+<p>退出<br>
+exit</p>
 <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image152.jpg" class="" title="img">
-<h2 id="八、数据卷"><a href="#八、数据卷" class="headerlink" title="八、数据卷"></a>八、数据卷</h2><p>创建和查看数据卷<br>    创建数据卷<br>    docker volume create html<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image154.jpg" class="" title="img"><br>    查看所有数据<br>    docker volume ls<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image156.jpg" class="" title="img"><br>    查看数据卷详细信息卷<br>    docker volume inspect html<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image158.jpg" class="" title="img"><br>    可看到，我们创建的html这个数据卷关联的宿主机目录是<br>    <code>/var/lib/docker/volumes/html/_data</code><br>挂载数据卷<br>    挂载一个数据卷到某个容器内目录<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name bigdata -v /export/data/docker-data/centos/:/root/data_container centos:7.8.2003</span><br></pre></td></tr></table></figure><br>    cd &#x2F;root&#x2F;data_container<br>    touch 1.txt<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image160.jpg" class="" title="img"><br>    到目录下查看<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image162.jpg" class="" title="img"><br>    配置数据卷容器<br>    创建启动c3数据卷容器：docker run -it –name&#x3D;c3 -v &#x2F;volume centos:7<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image164.jpg" class="" title="img"><br>    创建启动c1 c2 容器<br>    docker run -it –name&#x3D;c1 –volumes-from c3 centos:7<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image166.jpg" class="" title="img"><br>    docker run -it –name&#x3D;c2 –volumes-from c3 centos:7<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image168.jpg" class="" title="img"><br>给nginx挂载数据卷<br>    创建容器并挂载数据卷到容器内的HTML目录<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name ln -v /export/data/docker-data/nginx-html/:/usr/share/nginx/html -p 80:80 -d nginx</span><br></pre></td></tr></table></figure><br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image170.jpg" class="" title="img"><br>    进入html数据卷所在位置，并修改HTML内容<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image172.jpg" class="" title="img"><br>9.docker应用部署<br>部署mysql<br>    搜索mysql镜像<br>    docker search mysql<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image174.jpg" class="" title="img"><br>    拉取mysql镜像<br>    创建容器，设置端口映射、目录映射<br>    在&#x2F;export&#x2F;data&#x2F;docker-data&#x2F;目录下创建mysql目录用于存储mysql数据信息<br>    mkdir -p &#x2F;export&#x2F;data&#x2F;docker-data&#x2F;mysql<br>    cd &#x2F;export&#x2F;data&#x2F;docker-data&#x2F;mysql<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -id -p 3306:3306 --name=bigdata_mysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=hadoop mysql:5.6</span><br></pre></td></tr></table></figure><br>    进入容器，操作mysql<br>    docker exec –it bigdata_mysql &#x2F;bin&#x2F;bash<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image186.jpg" class="" title="img"><br>部署Tomcat<br>    搜索tomcat镜像<br>    docker search tomcat<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image188.jpg" class="" title="img"><br>    拉取tomcat镜像<br>    docker pull tomcat<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image190.jpg" class="" title="img"><br>    创建容器，设置端口映射、目录映射<br>    创建目录tomcat，并进入目录下<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image192.jpg" class="" title="img"><br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -id --name=c_tomcat -p 8080:8080 -v $PWD:/usr/local/tomcat/webapps tomcat</span><br></pre></td></tr></table></figure><br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image194.jpg" class="" title="img"><br>    使用外部机器访问tomcat<br>    （但是当前资源未公开，不过配置成了）<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image196.jpg" class="" title="img"><br>部署Redis<br>    搜索redis镜像<br>    docker search redis<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image198.jpg" class="" title="img"><br>    拉取redis镜像<br>    docker pull redis:5.0<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image200.jpg" class="" title="img"><br>    创建容器，设置端口映射<br>    docker run -id –name&#x3D;c_redis -p 6379:6379 redis:5.0<br>    <img src="/limeiyu.github.io/2023/06/13/Docker/clip_image202.jpg" class="" title="img"></p>
+<h2 id="八、数据卷">八、数据卷</h2>
+<p>创建和查看数据卷<br>
+创建数据卷<br>
+docker volume create html<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image154.jpg" class="" title="img"><br>
+查看所有数据<br>
+docker volume ls<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image156.jpg" class="" title="img"><br>
+查看数据卷详细信息卷<br>
+docker volume inspect html<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image158.jpg" class="" title="img"><br>
+可看到，我们创建的html这个数据卷关联的宿主机目录是<br>
+<code>/var/lib/docker/volumes/html/_data</code><br>
+挂载数据卷<br>
+挂载一个数据卷到某个容器内目录<br>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name bigdata -v /export/data/docker-data/centos/:/root/data_container centos:7.8.2003</span><br></pre></td></tr></table></figure><br>
+cd /root/data_container<br>
+touch 1.txt<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image160.jpg" class="" title="img"><br>
+到目录下查看<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image162.jpg" class="" title="img"><br>
+配置数据卷容器<br>
+创建启动c3数据卷容器：docker run -it --name=c3 -v /volume centos:7<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image164.jpg" class="" title="img"><br>
+创建启动c1 c2 容器<br>
+docker run -it --name=c1 --volumes-from c3 centos:7<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image166.jpg" class="" title="img"><br>
+docker run -it --name=c2 --volumes-from c3 centos:7<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image168.jpg" class="" title="img"><br>
+给nginx挂载数据卷<br>
+创建容器并挂载数据卷到容器内的HTML目录<br>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name ln -v /export/data/docker-data/nginx-html/:/usr/share/nginx/html -p 80:80 -d nginx</span><br></pre></td></tr></table></figure><br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image170.jpg" class="" title="img"><br>
+进入html数据卷所在位置，并修改HTML内容<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image172.jpg" class="" title="img"><br>
+9.docker应用部署<br>
+部署mysql<br>
+搜索mysql镜像<br>
+docker search mysql<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image174.jpg" class="" title="img"><br>
+拉取mysql镜像<br>
+创建容器，设置端口映射、目录映射<br>
+在/export/data/docker-data/目录下创建mysql目录用于存储mysql数据信息<br>
+mkdir -p /export/data/docker-data/mysql<br>
+cd /export/data/docker-data/mysql<br>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -id -p 3306:3306 --name=bigdata_mysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=hadoop mysql:5.6</span><br></pre></td></tr></table></figure><br>
+进入容器，操作mysql<br>
+docker exec –it bigdata_mysql /bin/bash<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image186.jpg" class="" title="img"><br>
+部署Tomcat<br>
+搜索tomcat镜像<br>
+docker search tomcat<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image188.jpg" class="" title="img"><br>
+拉取tomcat镜像<br>
+docker pull tomcat<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image190.jpg" class="" title="img"><br>
+创建容器，设置端口映射、目录映射<br>
+创建目录tomcat，并进入目录下<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image192.jpg" class="" title="img"><br>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -id --name=c_tomcat -p 8080:8080 -v $PWD:/usr/local/tomcat/webapps tomcat</span><br></pre></td></tr></table></figure><br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image194.jpg" class="" title="img"><br>
+使用外部机器访问tomcat<br>
+（但是当前资源未公开，不过配置成了）<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image196.jpg" class="" title="img"><br>
+部署Redis<br>
+搜索redis镜像<br>
+docker search redis<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image198.jpg" class="" title="img"><br>
+拉取redis镜像<br>
+docker pull redis:5.0<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image200.jpg" class="" title="img"><br>
+创建容器，设置端口映射<br>
+docker run -id --name=c_redis -p 6379:6379 redis:5.0<br>
+<img src="/limeiyu.github.io/2023/06/13/Docker/clip_image202.jpg" class="" title="img"></p>
 
 	</div>
 </article>

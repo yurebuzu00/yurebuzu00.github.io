@@ -91,33 +91,44 @@
   	</span>
   </div>
   <div class="post-content">
-  <h2 id="hive3安装及应用"><a href="#hive3安装及应用" class="headerlink" title="hive3安装及应用"></a>hive3安装及应用</h2><span id="more"></span>
-
-<h1 id="Mysql安装"><a href="#Mysql安装" class="headerlink" title="Mysql安装"></a>Mysql安装</h1><h2 id="卸载Centos7自带的mariadb"><a href="#卸载Centos7自带的mariadb" class="headerlink" title="卸载Centos7自带的mariadb"></a>卸载Centos7自带的mariadb</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br><span class="line">rpm -e mariadb-libs-5.5.68-1.el7.x86_64 –nodeps</span><br></pre></td></tr></table></figure>
-<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir /export/server/mysql</span><br><span class="line">tar xvf my</span><br><span class="line">yum -y install libaio</span><br><span class="line">rpm -ivh mysql-community-common-5.7.29-1.el7.x86_64.rpm mysql-community-libs-5.7.29-1.el7.x86_64.rpm mysql-community-client-5.7.29-1.el7.x86_64.rpm mysql-community-server-5.7.29-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld –initialize</span><br><span class="line">chown mysql:mysql /var/lib/mysql -R</span><br></pre></td></tr></table></figure>
-<h2 id="启动mysql"><a href="#启动mysql" class="headerlink" title="启动mysql"></a>启动mysql</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、Hive安装"><a href="#二、Hive安装" class="headerlink" title="二、Hive安装"></a>二、Hive安装</h2><h2 id="解压并设置软链接"><a href="#解压并设置软链接" class="headerlink" title="解压并设置软链接"></a>解压并设置软链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf apache-hive-3.1.2-bin.tar.gz</span><br><span class="line">ln -s apache-hive-3.1.2-bin hive</span><br></pre></td></tr></table></figure>
-
-<h2 id="解决hive与hadoop之间guava版本差异"><a href="#解决hive与hadoop之间guava版本差异" class="headerlink" title="解决hive与hadoop之间guava版本差异"></a>解决hive与hadoop之间guava版本差异</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/</span><br><span class="line">cp /export/server/hadoop/share/hadoop/common/lib/guava-27.0-jre.jar ./lib/</span><br></pre></td></tr></table></figure>
-
+  <h2 id="hive3安装及应用">hive3安装及应用</h2>
+<span id="more"></span>
+<h1>Mysql安装</h1>
+<h2 id="卸载Centos7自带的mariadb">卸载Centos7自带的mariadb</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br><span class="line">rpm -e mariadb-libs-5.5.68-1.el7.x86_64 –nodeps</span><br></pre></td></tr></table></figure>
+<h2 id="安装mysql">安装mysql</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir /export/server/mysql</span><br><span class="line">tar xvf my</span><br><span class="line">yum -y install libaio</span><br><span class="line">rpm -ivh mysql-community-common-5.7.29-1.el7.x86_64.rpm mysql-community-libs-5.7.29-1.el7.x86_64.rpm mysql-community-client-5.7.29-1.el7.x86_64.rpm mysql-community-server-5.7.29-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<h2 id="初始化">初始化</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld –initialize</span><br><span class="line">chown mysql:mysql /var/lib/mysql -R</span><br></pre></td></tr></table></figure>
+<h2 id="启动mysql">启动mysql</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<h2 id="二、Hive安装">二、Hive安装</h2>
+<h2 id="解压并设置软链接">解压并设置软链接</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf apache-hive-3.1.2-bin.tar.gz</span><br><span class="line">ln -s apache-hive-3.1.2-bin hive</span><br></pre></td></tr></table></figure>
+<h2 id="解决hive与hadoop之间guava版本差异">解决hive与hadoop之间guava版本差异</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/</span><br><span class="line">cp /export/server/hadoop/share/hadoop/common/lib/guava-27.0-jre.jar ./lib/</span><br></pre></td></tr></table></figure>
 <ul>
 <li>在hive目录下，删除其lib路径下的guava-19.0.jar，并将hadoop中的guava-27.0-jre.jar复制到hive的lib下</li>
 </ul>
-<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/conf</span><br><span class="line">mv hive-env.sh.template hive-env.sh</span><br><span class="line">vim hive-env.sh</span><br><span class="line">vim hive-site.xml</span><br></pre></td></tr></table></figure>
-<h2 id="文件尾部加入"><a href="#文件尾部加入" class="headerlink" title="文件尾部加入"></a>文件尾部加入</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/export/server/hadoop</span><br><span class="line">export HIVE_CONF_DIR=/export/server/hive/conf</span><br><span class="line">export HIVE_AUX_JARS_PATH=/export/server/hive/lib</span><br></pre></td></tr></table></figure>
+<h2 id="修改配置文件">修改配置文件</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/conf</span><br><span class="line">mv hive-env.sh.template hive-env.sh</span><br><span class="line">vim hive-env.sh</span><br><span class="line">vim hive-site.xml</span><br></pre></td></tr></table></figure>
+<h2 id="文件尾部加入">文件尾部加入</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/export/server/hadoop</span><br><span class="line">export HIVE_CONF_DIR=/export/server/hive/conf</span><br><span class="line">export HIVE_AUX_JARS_PATH=/export/server/hive/lib</span><br></pre></td></tr></table></figure>
 <ul>
 <li>进入hive的conf路径下,移动hive-env.sh.template到hive-env.sh并编辑hive-env.sh和hive-site.xml文件</li>
 </ul>
-<h2 id="初始化元数据"><a href="#初始化元数据" class="headerlink" title="初始化元数据"></a>初始化元数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/</span><br><span class="line">bin/schematool -initSchema -dbType mysql -verbos</span><br></pre></td></tr></table></figure>
+<h2 id="初始化元数据">初始化元数据</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hive/</span><br><span class="line">bin/schematool -initSchema -dbType mysql -verbos</span><br></pre></td></tr></table></figure>
 <ul>
 <li>初始化成功，会在mysql中创建74张表</li>
 </ul>
-<h2 id="启动hive"><a href="#启动hive" class="headerlink" title="启动hive"></a>启动hive</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/export/server/hive/bin/hive --service metastore</span><br><span class="line">/export/server/hive/bin/hive --service metastore &amp;</span><br><span class="line">/export/server/hive/bin/hive --service hiveserver2 &amp;</span><br></pre></td></tr></table></figure>
-<h2 id="启动metastore服务-前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间"><a href="#启动metastore服务-前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间" class="headerlink" title="启动metastore服务,前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间"></a>启动metastore服务,前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间</h2><h2 id="beeline客户端连接"><a href="#beeline客户端连接" class="headerlink" title="beeline客户端连接"></a>beeline客户端连接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /export/server/apache-hive-3.1.2-bin/ root@node3:/export/server/</span><br><span class="line">/export/server/hive/bin/hive</span><br></pre></td></tr></table></figure>
-<h2 id="将node1的安装包拷贝到beeline客户端-node3-机器上并连接访问"><a href="#将node1的安装包拷贝到beeline客户端-node3-机器上并连接访问" class="headerlink" title="将node1的安装包拷贝到beeline客户端(node3)机器上并连接访问"></a>将node1的安装包拷贝到beeline客户端(node3)机器上并连接访问</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/hive/bin/hive</span><br></pre></td></tr></table></figure>
+<h2 id="启动hive">启动hive</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/export/server/hive/bin/hive --service metastore</span><br><span class="line">/export/server/hive/bin/hive --service metastore &amp;</span><br><span class="line">/export/server/hive/bin/hive --service hiveserver2 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="启动metastore服务-前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间">启动metastore服务,前台、后台和hiveserver2服务，启动hiveserver2时需要一定的时间</h2>
+<h2 id="beeline客户端连接">beeline客户端连接</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /export/server/apache-hive-3.1.2-bin/ root@node3:/export/server/</span><br><span class="line">/export/server/hive/bin/hive</span><br></pre></td></tr></table></figure>
+<h2 id="将node1的安装包拷贝到beeline客户端-node3-机器上并连接访问">将node1的安装包拷贝到beeline客户端(node3)机器上并连接访问</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/hive/bin/hive</span><br></pre></td></tr></table></figure>
 
 	</div>
 </article>
