@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,inital-scale=1,user-scalable=no">
-  <title> [ Hexo ]</title>
+  <title>Zookeeper [ Hexo ]</title>
   <!-- bootstrapcss文件 -->
  <!--  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
 <!--   
@@ -76,7 +76,7 @@
     
 <article id="post">
 	<div class="post-title">
-  <h1></h1>
+  <h1>Zookeeper</h1>
   	</div>
   <div class="page-meta">
   	<span class="fa-wrap">
@@ -91,130 +91,109 @@
   	</span>
   </div>
   <div class="post-content">
-  <p>三、Zookeeper</p>
-<p>1.基础环境</p>
+  <p>1.基础环境</p>
 <p>需要配置好jdk和集群，关闭防火墙</p>
 <p>2.解压</p>
 <p>（1）解压zookeeper压缩包</p>
 <p>tar zxvf zookeeper-3.4.6.tar.gz</p>
 <img src="/2023/06/20/Zookeeper/clip_image002.jpg" class="" title="img">
-
 <p>（2）设置软链接</p>
-<p>ln -s zookeeper-3.4.6&#x2F; zookeeper</p>
+<p>ln -s zookeeper-3.4.6/ zookeeper</p>
 <img src="/2023/06/20/Zookeeper/clip_image004.jpg" class="" title="img">
-
 <p>3.设置环境变量</p>
-<p>在&#x2F;etc&#x2F;profile中添加以下语句</p>
-<p>export ZOOKEEPER_HOME&#x3D;&#x2F;export&#x2F;server&#x2F;zookeeper</p>
-<p>export PATH&#x3D;$PATH:$ZOOKEEPER_HOME&#x2F;bin</p>
+<p>在/etc/profile中添加以下语句</p>
+<p>export ZOOKEEPER_HOME=/export/server/zookeeper</p>
+<p>export PATH=$PATH:$ZOOKEEPER_HOME/bin</p>
 <img src="/2023/06/20/Zookeeper/clip_image006.jpg" class="" title="img">
-
 <p>4.配置文件</p>
-<p>cd &#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;conf&#x2F;</p>
+<p>cd /export/server/zookeeper/conf/</p>
 <p>cp zoo_sample.cfg zoo.cfg</p>
-<p>mkdir -p &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;</p>
+<p>mkdir -p /export/data/zookeeper/zkdatas/</p>
 <img src="/2023/06/20/Zookeeper/clip_image008.jpg" class="" title="img">
-
 <p>vim zoo.cfg</p>
 <p>修改zoo.cfg，在文件中修改以下内容</p>
 <p>#Zookeeper的数据存放目录</p>
-<p>dataDir &#x3D; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;</p>
+<p>dataDir = /export/data/zookeeper/zkdatas/</p>
 <p># 保留多少个快照</p>
-<p>autopurge.snapRetainCount &#x3D; 3</p>
+<p>autopurge.snapRetainCount = 3</p>
 <p># 日志多少小时清理一次</p>
-<p>autopurge.purgeInterval &#x3D; 1</p>
+<p>autopurge.purgeInterval = 1</p>
 <p># 集群中服务器地址</p>
-<p>server.1 &#x3D; node1:2888:3888</p>
-<p>server.2 &#x3D; node2:2888:3888</p>
-<p>server.3 &#x3D; node3:2888:3888</p>
+<p>server.1 = node1:2888:3888</p>
+<p>server.2 = node2:2888:3888</p>
+<p>server.3 = node3:2888:3888</p>
 <img src="/2023/06/20/Zookeeper/clip_image010.png" class="" title="img">
-
 <p>5.添加myid配置</p>
-<p>echo 1 &gt; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;myid</p>
+<p>echo 1 &gt; /export/data/zookeeper/zkdatas/myid</p>
 <img src="/2023/06/20/Zookeeper/clip_image012.jpg" class="" title="img">
-
 <p>6.分发zookeeper安装包并修改myid值</p>
-<p>（1）scp -r zookeeper-3.4.6&#x2F; root@node2:&#x2F;export&#x2F;server&#x2F;</p>
-<p>scp -r zookeeper-3.4.6&#x2F; root@node3:&#x2F;export&#x2F;server&#x2F;</p>
+<p>（1）scp -r zookeeper-3.4.6/ root@node2:/export/server/</p>
+<p>scp -r zookeeper-3.4.6/ root@node3:/export/server/</p>
 <p><img src="zookeeper/clip_image013.jpg" alt="img"> <img src="zookeeper/clip_image015.jpg" alt="img"></p>
 <p>（2）在node2和node3两台机器上建立软链接</p>
-<p>ln -s zookeeper-3.4.6&#x2F; zookeeper</p>
+<p>ln -s zookeeper-3.4.6/ zookeeper</p>
 <img src="/2023/06/20/Zookeeper/clip_image017.jpg" class="" title="img">
-
 <p>（3）并修改myid的值为2和3</p>
 <img src="/2023/06/20/Zookeeper/clip_image019.jpg" class="" title="img">
-
 <img src="/2023/06/20/Zookeeper/clip_image021.jpg" class="" title="img">
-
 <p>7.在三台虚拟机上都启动zookeeper服务</p>
 <p>（1）三台都启动</p>
-<p>&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh start</p>
+<p>/export/server/zookeeper/bin/zkServer.sh start</p>
 <img src="/2023/06/20/Zookeeper/clip_image023.jpg" class="" title="img">
-
 <p>（2）查看三台虚拟机的启动状态</p>
-<p>&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh status</p>
+<p>/export/server/zookeeper/bin/zkServer.sh status</p>
 <img src="/2023/06/20/Zookeeper/clip_image025.jpg" class="" title="img">
-
 <img src="/2023/06/20/Zookeeper/clip_image027.jpg" class="" title="img">
-
 <img src="/2023/06/20/Zookeeper/clip_image029.jpg" class="" title="img">
-
 <p>8.一键启动（脚本）</p>
 <p>（1）编写一键启动的脚本</p>
-<p>#!&#x2F;bin&#x2F;bash</p>
+<p>#!/bin/bash</p>
 <p>if [ $# -eq 0 ] # $#参数的个数</p>
 <p>then</p>
-<p>  echo “please input param:start stop status”</p>
+<p>echo “please input param:start stop status”</p>
 <p>else</p>
-<p>  if [ $1 &#x3D; start ]</p>
-<p>  then</p>
-<p>​    for i in {1..3}</p>
+<p>if [ $1 = start ]</p>
+<p>then</p>
+<p>​    for i in {1…3}</p>
 <p>​    do</p>
 <p>​      echo “${1}ing node${i}”</p>
-<p>​      ssh node${i} “source &#x2F;etc&#x2F;profile;&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh start”</p>
+<p>​      ssh node${i} “source /etc/profile;/export/server/zookeeper/bin/zkServer.sh start”</p>
 <p>​    done</p>
-<p>  fi</p>
-<p>  if [ $1 &#x3D; stop ]</p>
-<p>  then</p>
-<p>​    for i in {1..3}</p>
+<p>fi</p>
+<p>if [ $1 = stop ]</p>
+<p>then</p>
+<p>​    for i in {1…3}</p>
 <p>​    do</p>
 <p>​      echo “${1}ping node${i}”</p>
-<p>​      ssh node${i} “source &#x2F;etc&#x2F;profile;&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh stop”</p>
+<p>​      ssh node${i} “source /etc/profile;/export/server/zookeeper/bin/zkServer.sh stop”</p>
 <p>​    done</p>
-<p>  fi</p>
-<p>  if [ $1 &#x3D; status ]</p>
-<p>  then</p>
-<p>​    for i in {1..3}</p>
+<p>fi</p>
+<p>if [ $1 = status ]</p>
+<p>then</p>
+<p>​    for i in {1…3}</p>
 <p>​    do</p>
 <p>​      echo “node${i} status:”</p>
-<p>​      ssh node${i} “source &#x2F;etc&#x2F;profile;&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh status”</p>
+<p>​      ssh node${i} “source /etc/profile;/export/server/zookeeper/bin/zkServer.sh status”</p>
 <p>​    done</p>
-<p>  fi</p>
+<p>fi</p>
 <p>fi</p>
 <img src="/2023/06/20/Zookeeper/clip_image031.jpg" class="" title="img">
-
 <p>（2）配置zkall.sh的环境变量</p>
 <p>#ZOOKEEPER_SHELL_HOME</p>
-<p>export ZKS_HOME&#x3D;&#x2F;export&#x2F;shell&#x2F;</p>
-<p>export PATH&#x3D;$PATH:$ZKS_HOME</p>
+<p>export ZKS_HOME=/export/shell/</p>
+<p>export PATH=$PATH:$ZKS_HOME</p>
 <img src="/2023/06/20/Zookeeper/clip_image033.jpg" class="" title="img">
-
 <p>（3）让环境变量生效</p>
 <p>配置系统变量</p>
 <img src="/2023/06/20/Zookeeper/clip_image035.jpg" class="" title="img">
-
 <img src="/2023/06/20/Zookeeper/clip_image037.jpg" class="" title="img">
-
 <p>（4）启动测试</p>
-<p>1）chmod 777 &#x2F;export&#x2F;shell&#x2F;zkall.sh</p>
+<p>1）chmod 777 /export/shell/zkall.sh</p>
 <img src="/2023/06/20/Zookeeper/clip_image039.jpg" class="" title="img">
-
-<p>2）zkall.sh start</p>
+<p>2）<a target="_blank" rel="noopener" href="http://zkall.sh">zkall.sh</a> start</p>
 <img src="/2023/06/20/Zookeeper/clip_image041.jpg" class="" title="img">
-
 <p>如下图7084为进程</p>
 <img src="/2023/06/20/Zookeeper/clip_image043.jpg" class="" title="img">
-
 <p>成功启动啦！</p>
 
 	</div>

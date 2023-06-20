@@ -84,17 +84,23 @@
 </div>
 <div class="article-inner">
 	
+	<header class="article-header">
+		<h1 itemprop="name">
+		<a href="2023/06/20/Kafka/">
+		Kafka
+		</a>
+		</h1>
+	</header>
+	
 	<div class="article-entry">
 		
 			
-			四、Kafka
-（一）安装kafka集群
+			（一）安装kafka集群
 1.需要的环境有：java和zookeeper
-2.移动包到&#x2F;export&#x2F;server
-
+2.移动包到/export/server
 
 3.解压并设置软连接
-tar zxvf...
+tar zxvf kafka_2.11-2.0.0.t...
 			
 			<p class="article-more-link">
 			<a href="2023/06/20/Kafka/#more">Read More</a>
@@ -117,18 +123,25 @@ tar zxvf...
 </div>
 <div class="article-inner">
 	
+	<header class="article-header">
+		<h1 itemprop="name">
+		<a href="2023/06/20/Zookeeper/">
+		Zookeeper
+		</a>
+		</h1>
+	</header>
+	
 	<div class="article-entry">
 		
 			
-			三、Zookeeper
-1.基础环境
+			1.基础环境
 需要配置好jdk和集群，关闭防火墙
 2.解压
 （1）解压zookeeper压缩包
 tar zxvf zookeeper-3.4.6.tar.gz
 
-
-（2）...
+（2）设置软链接
+ln -s z...
 			
 			<p class="article-more-link">
 			<a href="2023/06/20/Zookeeper/#more">Read More</a>
@@ -151,11 +164,18 @@ tar zxvf zookeeper-3.4.6.tar.gz
 </div>
 <div class="article-inner">
 	
+	<header class="article-header">
+		<h1 itemprop="name">
+		<a href="2023/06/20/Sqoop/">
+		Sqoop
+		</a>
+		</h1>
+	</header>
+	
 	<div class="article-entry">
 		
 			
-			二、Sqoop
-Sqoop可以将关系型数据库（RDBMS）的数据导入（import）hadoop生态系统中，例如将RDBMS中的表导入到HDFS中或将数据加载到hive表中；将hadoop生态系...
+			Sqoop可以将关系型数据库（RDBMS）的数据导入（import）hadoop生态系统中，例如将RDBMS中的表导入到HDFS中或将数据加载到hive表中；将hadoop生态系统中的数据导出（...
 			
 			<p class="article-more-link">
 			<a href="2023/06/20/Sqoop/#more">Read More</a>
@@ -194,8 +214,7 @@ Sqoop可以将关系型数据库（RDBMS）的数据导入（import）hadoop生�
 把apache-flume-1.9.0-bin.tar.gz进行解压
 tar zxvf apache-flume-1.9.0-bin.tar.gz
 
-
-（2）添加...
+（2）添加软...
 			
 			<p class="article-more-link">
 			<a href="2023/06/19/Flume/#more">Read More</a>
@@ -228,7 +247,7 @@ tar zxvf apache-flume-1.9.0-bin.tar.gz
 	
 	<div class="article-entry">
 		
-		&lt;h1 id=&#34;Spark-Pyspark基础编码环境&#34;&gt;&lt;a href=&#34;#Spark-Pyspark基础编码环境&#34; class=&#34;headerlink&#34; title=&#34;Spark-Pyspark基础编码环境&#34;&gt;&lt;/a&gt;Spark-Pyspark基础编码环境&lt;/h1&gt;
+		&lt;h1&gt;Spark-Pyspark基础编码环境&lt;/h1&gt;
 		
 		<p class="article-more-link">
 			<a href="2023/06/13/Spark-Pyspark/#more">Read More</a>
@@ -261,7 +280,11 @@ tar zxvf apache-flume-1.9.0-bin.tar.gz
 	
 	<div class="article-entry">
 		
-		&lt;h1 id=&#34;spark-standalone全流程配置和应用&#34;&gt;&lt;a href=&#34;#spark-standalone全流程配置和应用&#34; class=&#34;headerlink&#34; title=&#34;spark-standalone全流程配置和应用&#34;&gt;&lt;/a&gt;spark-standalone全流程配置和应用&lt;/h1&gt;&lt;p&gt;部署Spark Stand Alone环境时，需要用到三台linux虚拟机构成，在此以node1、node2、node3为例&lt;br&gt;node1运行: Spark的Master进程  和 1个Worker进程&lt;br&gt;node2运行: spark的1个worker进程&lt;br&gt;node3运行: spark的1个worker进程&lt;/p&gt;
+		&lt;h1&gt;spark-standalone全流程配置和应用&lt;/h1&gt;
+&lt;p&gt;部署Spark Stand Alone环境时，需要用到三台linux虚拟机构成，在此以node1、node2、node3为例&lt;br&gt;
+node1运行: Spark的Master进程  和 1个Worker进程&lt;br&gt;
+node2运行: spark的1个worker进程&lt;br&gt;
+node3运行: spark的1个worker进程&lt;/p&gt;
 		
 		<p class="article-more-link">
 			<a href="2023/06/13/Spark-StandAlone/#more">Read More</a>
@@ -294,7 +317,7 @@ tar zxvf apache-flume-1.9.0-bin.tar.gz
 	
 	<div class="article-entry">
 		
-		&lt;h1 id=&#34;Spark本地全流程配置及操作&#34;&gt;&lt;a href=&#34;#Spark本地全流程配置及操作&#34; class=&#34;headerlink&#34; title=&#34;Spark本地全流程配置及操作&#34;&gt;&lt;/a&gt;Spark本地全流程配置及操作&lt;/h1&gt;
+		&lt;h1&gt;Spark本地全流程配置及操作&lt;/h1&gt;
 		
 		<p class="article-more-link">
 			<a href="2023/06/13/Spark-Local/#more">Read More</a>
@@ -327,7 +350,9 @@ tar zxvf apache-flume-1.9.0-bin.tar.gz
 	
 	<div class="article-entry">
 		
-		&lt;h1 id=&#34;spark-stand-alone-HA环境搭建&#34;&gt;&lt;a href=&#34;#spark-stand-alone-HA环境搭建&#34; class=&#34;headerlink&#34; title=&#34;spark stand alone HA环境搭建&#34;&gt;&lt;/a&gt;spark stand alone HA环境搭建&lt;/h1&gt;&lt;p&gt;Spark Standalone HA用于提高 Spark 集群的可用性和容错能力。此部署方式使用多个 Spark master节点来实现故障切换和负载均衡，从而确保即使某个节点发生故障或者停机，&lt;br&gt;Spark 集群仍然可以继续工作。&lt;/p&gt;
+		&lt;h1&gt;spark stand alone HA环境搭建&lt;/h1&gt;
+&lt;p&gt;Spark Standalone HA用于提高 Spark 集群的可用性和容错能力。此部署方式使用多个 Spark master节点来实现故障切换和负载均衡，从而确保即使某个节点发生故障或者停机，&lt;br&gt;
+Spark 集群仍然可以继续工作。&lt;/p&gt;
 		
 		<p class="article-more-link">
 			<a href="2023/06/13/Spark-HA/#more">Read More</a>
@@ -360,7 +385,7 @@ tar zxvf apache-flume-1.9.0-bin.tar.gz
 	
 	<div class="article-entry">
 		
-		&lt;h2 id=&#34;hive3安装及应用&#34;&gt;&lt;a href=&#34;#hive3安装及应用&#34; class=&#34;headerlink&#34; title=&#34;hive3安装及应用&#34;&gt;&lt;/a&gt;hive3安装及应用&lt;/h2&gt;
+		&lt;h2 id=&#34;hive3安装及应用&#34;&gt;hive3安装及应用&lt;/h2&gt;
 		
 		<p class="article-more-link">
 			<a href="2023/06/13/Hive3/#more">Read More</a>
